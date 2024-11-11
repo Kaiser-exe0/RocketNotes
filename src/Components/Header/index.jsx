@@ -5,7 +5,7 @@ import { Container, Profile, Logout } from "./styles";
 export function Header() {
   return (
     <Container>
-      <Profile>
+      <Profile to="/profile">
         <img src="https://github.com/kaiser-exe0.png" alt="User Image" />
         <div>
           <span>

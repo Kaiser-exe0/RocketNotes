@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import styled from "styled-components";
 
 export const Container = styled.header`
@@ -13,25 +15,22 @@ border-bottom-color: ${({theme}) => theme.COLORS.BACKGROUND_700};
 display: flex;
 justify-content:space-between;
 
-padding: 0 80px
+padding: 0 80px;
 
 `
 
-export const Profile = styled.div`
-
+export const Profile = styled(Link)`
   display: flex;
   align-items: center;
 
   >img{
     width: 56px;
     height: 56px;
-
     border-radius:50%
   }
 
-  >div{
+  > div {
     display: flex;
-
     flex-direction: column;
     margin-left: 16px;
     line-height: 24px;
