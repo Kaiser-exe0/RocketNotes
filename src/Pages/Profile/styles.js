@@ -16,6 +16,11 @@ svg{
 
 color: ${({theme})=> theme.COLORS.GRAY_100};
 font-size: 24px;}
+
+>button{
+      background:none;
+      border: none
+    }
 }
 `;
 

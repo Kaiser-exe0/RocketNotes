@@ -8,6 +8,7 @@ import { api } from "../../services/api";
 import { Note } from "../../Components/Note";
 import { Section } from "../../Components/Section";
 import { useEffect, useState } from 'react'
+import { useNavigate } from "react-router-dom"
 
 export function Home() {
   const [search, setSearch] = useState("");
@@ -27,6 +28,12 @@ export function Home() {
     }
 
   }
+
+    const navigate = useNavigate();
+
+function handleDetails(id) {
+  navigate(`/details/${id}` )
+}
 
 
   useEffect(() =>{
@@ -83,7 +90,7 @@ export function Home() {
         <Input
           icon={FiSearch}
           placeholder="Pesquisar pelo título"
-          onChange={() => setSearch(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
           />
       </Search>
 
@@ -94,6 +101,7 @@ export function Home() {
               <Note
               key={String(note.id)}
               data={note}
+              onClick={() => handleDetails(note.id)}
               />
             ))
           }

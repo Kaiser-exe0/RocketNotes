@@ -1,49 +1,106 @@
 import { Container, Links, Content } from "./Styles"
 
+import { api } from "../../services/api"
+import { useState, useEffect } from "react"
 import { Button } from "../../Components/Button"
 import { Header } from "../../Components/Header"
 import { Section } from "../../Components/Section"
 import { Tag } from "../../Components/Tag";
 import { ButtonText } from "../../Components/ButtonText"
+import { useParams, useNavigate } from "react-router-dom";
 
 export function Details() {
+
+  const [data, setData] = useState(null)
+
+  const params = useParams();
+  const navigate = useNavigate();
+  
+  function handleBack() {
+    navigate(-1)
+  }
+
+  async function handleRemove() {
+    const confirm = window.confirm("Tem certeza que deseja remover a nota?");
+
+    if (confirm) {
+      await api.delete(`/notes/${params.id}`);
+      navigate(-1)
+    }
+  }
+
+  useEffect(()=> {
+
+    async function fetchNote(){
+      const response = await api.get(`/notes/${params.id}`);
+      setData(response.data);
+    }
+
+    fetchNote();
+
+  },[])
+
   return (
     <Container>
       <Header />
-
+      {
+        data && 
       <main>
         <Content>
 
       <ButtonText
         title="Excluir nota"
+        onClick={handleRemove}
           />
           
-          <h1>Introdução ao React</h1>
+          <h1>
+            {data.title}
+          </h1>
           
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam amet dolor odio cupiditate veniam est quaerat? Cumque, a? Itaque error minus nemo doloribus obcaecati quaerat voluptatibus libero reprehenderit nulla sit.</p>
+          <p>
+            {data.description}
+          </p>
 
+        {
+          data.links &&
       <Section title="Links úteis">
+
         <Links>
-          <li>
-           <a href="#">https://github.com/kaiser-exe0</a>
+          {
+            data.links.map(link=>(
+          <li key={String(link.id)}>
+           <a href={link.url} target="_blank">  
+            {link.url}
+           </a>
           </li>
-          <li>
-           <a href="#">https://github.com/kaiser-exe0</a>
-          </li>
-          <li>
-           <a href="#">https://github.com/kaiser-exe0</a>
-          </li>
+          ))
+        }
+        
         </Links>
       </Section> 
+        }
+
+    {
+          data.tags &&
       <Section title="Marcadores">
-        <Tag title="React"/>
-        <Tag title="Styled"/>
+        {  
+             data.tags.map(tag =>(
+            <Tag
+              key={String(tag.id)}  
+              title={tag.name}
+            />
+          ))
+        }
       </Section>
+    }
+
       <Button
         title="Voltar"
+        onClick={handleBack}
           />
              </Content>
       </main>
+      }
     </Container>
   )
 }
